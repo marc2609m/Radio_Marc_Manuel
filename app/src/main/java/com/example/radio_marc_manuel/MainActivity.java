@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         Button3 = findViewById(R.id.Boton3);
         Button4 = findViewById(R.id.Boton4);
         inicialitzarMaps();
-        posarImatgesBotons();
     }
 
     public void clickarBoton(View view){
@@ -42,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void inicialitzarMaps(){
-        soundsLinks.put(R.id.Boton1, "https://shoutcast.ccma.cat/ccma/catalunyaradioHD.mp3");
-        nameLinks.put(R.id.Boton1, "Catalunya Ràdio");
+        soundsLinks.put(R.id.Boton1, "https://27833.live.streamtheworld.com/LOS40_SC");
+        nameLinks.put(R.id.Boton1, "Los 40");
         descriptionLinks.put(R.id.Boton1, "Descripcio 1");
 
         soundsLinks.put(R.id.Boton2, "https://shoutcast.ccma.cat/ccma/catalunyainformacioHD.mp3");
@@ -57,10 +56,5 @@ public class MainActivity extends AppCompatActivity {
         soundsLinks.put(R.id.Boton4, "https://shoutcast.ccma.cat/ccma/icatHD.mp3");
         nameLinks.put(R.id.Boton4, "Icat FM ");
         descriptionLinks.put(R.id.Boton4, "Descripcio 4");
-    }
-
-    private void posarImatgesBotons(){
-        Drawable drawable = getResources().getDrawable(R.drawable.catalunyaradio);
-        Button1.setImageDrawable(drawable);
     }
 }
