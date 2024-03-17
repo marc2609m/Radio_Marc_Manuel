@@ -31,7 +31,7 @@ public class ReproductorClass extends AppCompatActivity {
     private MediaPlayer mp;
     private final String LOS_40 = "https://27833.live.streamtheworld.com/LOS40_SC";
     private final String LOS_40_DANCE = "https://playerservices.streamtheworld.com/api/livestream-redirect/LOS40_DANCE_SC";
-    private final String LOS_40_CLASSIC = "https://playerservices.streamtheworld.com/api/livestream-redirect/LOS40_CLASSIC_SC";
+    private final String LOS_40_CLASSIC = "https://27833.live.streamtheworld.com/LOS40_CLASSIC_SC";
     private static String nombre;
     private static String description;
     private Uri audioLink;
@@ -61,11 +61,7 @@ public class ReproductorClass extends AppCompatActivity {
 
         context = this.getApplicationContext();
 
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                mp = MediaPlayer.create(context, audioLink);
-            }
-        }, 1000);
+        mp = MediaPlayer.create(this, audioLink);
 
 
 
@@ -83,7 +79,7 @@ public class ReproductorClass extends AppCompatActivity {
         intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent1.putExtra("name", nombre);
         intent1.putExtra("desc", description);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent1, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent1, PendingIntent.FLAG_IMMUTABLE);
 
         builder = new NotificationCompat.Builder(this, "Canal")
                 .setSmallIcon(R.drawable.baseline_radio_24)
@@ -101,23 +97,23 @@ public class ReproductorClass extends AppCompatActivity {
     }
 
     public void PlaySound(View view) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        nmc.notify(1, builder.build());
         if (mp != null) {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     mp.start();
+                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    nmc.notify(1, builder.build());
                 }
-            }, 1500);
+            }, 1000);
 
         }
 
@@ -141,6 +137,15 @@ public class ReproductorClass extends AppCompatActivity {
                     mp.pause();
                 }
             }, 1500);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(this.mp != null){
+            this.mp.release();
+            this.mp = null;
         }
     }
 }
